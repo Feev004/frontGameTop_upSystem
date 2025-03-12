@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Managepayment</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        header{
+            position: relative;
+            background-color: #333333;
+            height: 60px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header > a{
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .logout{
+            position: absolute;
+            right: 30px;
+        }
+
+        .content{
+            padding: 20px;
+            height: 50dvh;
+            display: flex;
+            column-gap: 20px;
+        }
+
+        .content .boxleft{
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content .boxright{
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content button{
+            padding: 5px 10px;
+            font-weight: bold;
+            border: none;
+            background-color: #333333;
+            color: #fff;
+            border-radius: 4px;
+            align-self: baseline;
+        }
+
+        .content .boxleft > div{
+            margin-top: 20px;
+            overflow-y: scroll;
+            flex-grow: 1;
+        }
+
+        .content .boxright > div{
+            margin-top: 20px;
+            overflow-y: scroll;
+            flex-grow: 1;
+        }
+
+        .content .boxleft > div > div{
+            border: 1px solid #33333310;
+            padding: 10px;
+        }
+
+        .content .boxright > div > div{
+            border: 1px solid #33333310;
+            padding: 10px;
+        }
+
+        table{
+            width: 100%;
+            padding: 20px;
+        }
+
+        table th{
+            width: 33.33%;
+            background-color: #333333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        table td{
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        table td:nth-of-type(3) > a{
+            color: #fe0032;
+            text-decoration: none;
+        }
+
+        .inputpayment{
+            display: none;
+            margin: 20px auto;
+            width: 400px;
+            border: 1px solid #33333328;
+            padding: 20px;
+        }
+
+        .inputpayment form{
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+        }
+
+        .inputpayment form > input{
+            padding: 5px 10px;
+        }
+
+        .inputpayment form > select{
+            padding: 5px 10px;
+        }
+
+        .inputpromotion{
+            display: none;
+            margin: 20px auto;
+            width: 400px;
+            border: 1px solid #33333328;
+            padding: 20px;
+        }
+
+        .inputpromotion form{
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+        }
+
+        .inputpromotion form > input{
+            padding: 5px 10px;
+        }
+
+        .btnadd{
+            padding: 5px 10px;
+            font-weight: bold;
+            border: none;
+            background-color: #333333;
+            color: #fff;
+            border-radius: 4px;
+            align-self: baseline;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/home">หน้าหลัก</a>
+        <a href="/cart">การสั่งซื้อ</a>
+        <a href="/insertgame">เพิ่มเกม</a>
+        <a href="/editgame">จัดการเกม</a>
+        <a href="/managepayment">จัดการ การชำระเงิน</a>
+        <a class="logout" href="/logout">Logout</a>
+    </header>
+    <div class="content">
+        <div class="boxleft">
+            <button class="btnpayment">เพิ่มวิธีชำระเงิน</button>
+            <div>
+                <% for (let i = 0 ; i < paymentdata.length ; i++) { %>
+                    <div class="item"><%= paymentdata[i].payment_metod %></div>
+                <% } %>
+            </div>
+        </div>
+        <div class="boxright">
+            <button class="btnpromotion">เพิ่ม promotion</button>
+            <div>
+                <% for (let i = 0 ; i < promotiondata.length ; i++) { %>
+                    <div class="item"><%= promotiondata[i].promo_name %> <span style="margin-left: 30px;color: #3333338f"><%= promotiondata[i].promo_start %> ถึง <%= promotiondata[i].promo_end %></span></div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="inputpayment">
+        <form action="/createpayment" method="post">
+            <p>เพิ่มวิธีชำระเงิน</p>
+            <input type="text" name="payment_metod" placeholder="เพิ่มวิธีชำละเงิน" required>
+            <p>ใส่ promotion</p>
+            <select name="promotion_id" id="">
+                <option value="">-</option>
+                <% for (let i = 0 ; i < promotiondata.length ; i++) { %>
+                    <option value="<%= promotiondata[i].promoid %>"><%= promotiondata[i].promo_name %></option>
+                <% } %>
+            </select>
+            <button class="btnadd" type="submit">เพิ่ม</button>
+        </form>
+    </div>
+    <div class="inputpromotion">
+        <form action="/createpromotion" method="post">
+            <p>เพิ่ม promotion</p>
+            <input type="text" name="promo_name" placeholder="เพิ่ม promotion" required>
+            <p>ส่วนลด</p>
+            <input min="0" type="number" name="discount" placeholder="ใส่ส่วนลด" required>
+            <p>ตั้งแต่</p>
+            <input type="date" name="promo_start" required>
+            <p>ถึง</p>
+            <input type="date" name="promo_end" required>
+            <button class="btnadd" type="submit">เพิ่ม</button>
+        </form>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>วิธีชำระเงิน</th>
+                <th>Promotion</th>
+                <th>Option</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let i = 0 ; i < paymentdata.length ; i++) { %>
+                <tr>
+                    <td><%= paymentdata[i].payment_metod %></td>
+                    <td>
+                        <form action="/changepromotion/<%= paymentdata[i].paymentid %>" method="post">
+                            <select name="promotion_id" id="">
+                                <option value="">-</option>
+                                <% for (let j = 0 ; j < promotiondata.length ; j++) { %>
+                                    <% if (paymentdata[i].promotion_id == promotiondata[j].promoid) { %>
+                                        <option value="<%= promotiondata[j].promoid %>" selected><%= promotiondata[j].promo_name %></option>
+                                    <% } else { %>
+                                        <option value="<%= promotiondata[j].promoid %>"><%= promotiondata[j].promo_name %></option>
+                                    <% } %>
+                                <% } %>
+                            </select>
+                            <button type="submit">ตกลง</button>
+                        </form>
+                    </td>
+                    <td><a onclick="return(confirm())" href="/deletepayment/<%= paymentdata[i].paymentid %>">Delete</a></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <script>
+        
+        const btnpayment = document.querySelector(".btnpayment");
+        const btnpromotion = document.querySelector(".btnpromotion");
+        const inputpayment = document.querySelector(".inputpayment");
+        const inputpromotion = document.querySelector(".inputpromotion");
+        let isclick1 = true;
+        let isclick2 = true;
+
+        document.addEventListener("click",(event) => {
+            if (event.target.className == "btnpayment") {
+                isclick2 = true;
+                if (isclick1 == true) {
+                    inputpayment.style.display = "block";
+                    inputpromotion.style.display = "none";
+                    isclick1 = false;
+                }
+                else {
+                    inputpayment.style.display = "none";
+                    inputpromotion.style.display = "none";
+                    isclick1 = true;
+                }
+            }
+            else if (event.target.className == "btnpromotion") {
+                isclick1 = true;
+                if (isclick2 == true) {
+                    inputpayment.style.display = "none";
+                    inputpromotion.style.display = "block";
+                    isclick2 = false;
+                }
+                else {
+                    inputpayment.style.display = "none";
+                    inputpromotion.style.display = "none";
+                    isclick2 = true;
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

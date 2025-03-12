@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        header{
+            position: relative;
+            background-color: #333333;
+            height: 60px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header > a{
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .logout{
+            position: absolute;
+            right: 30px;
+        }
+
+        table{
+            width: 100%;
+            padding: 30px;
+        }
+
+        table th{
+            width: 16.66%;
+        }
+
+        table td{
+            text-align: center;
+            padding: 20px;
+        }
+
+        table td img{
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+        }
+
+        table td a{
+            text-decoration: none;
+            color: #ff0034;
+            font-weight: bold;
+        }
+
+        .boxpay{
+            padding: 30px;
+        }
+
+        .boxpay a{
+            display: block;
+            margin-top: 10px;
+            width: 150px;
+            background-color: #333333;
+            color: #fff;
+            padding: 8px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/home">หน้าหลัก</a>
+        <a href="/cart">การสั่งซื้อ</a>
+        <% if (datalogin.role == "admin") { %>
+        <a href="/insertgame">เพิ่มเกม</a>
+        <a href="/editgame">จัดการเกม</a>
+        <a href="/managepayment">จัดการ การชำระเงิน</a>
+        <% } %>
+        <a class="logout" href="/logout">Logout</a>
+    </header>
+    <table>
+        <thead>
+            <tr>
+                <th>รูป</th>
+                <th>ชื่อเกม</th>
+                <th>Promotion</th>
+                <th>ราคา</th>
+                <th>ส่วนลด</th>
+                <th>รวม</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% let total = 0 %>
+            <% for (let i = 0 ; i < cartdata.length ; i++) { %>
+                <tr>
+                    <td><img src="<%= cartdata[i].Game.urlimage %>" alt=""></td>
+                    <td><%= cartdata[i].Game.gamename %></td>
+                    <td><%= cartdata[i].payment.promotion ? cartdata[i].payment.promotion.promo_name:"-" %></td>
+                    <td><%= cartdata[i].amount %></td>
+                    <td><%= cartdata[i].payment.promotion ? cartdata[i].payment.promotion.discount:"-" %></td>
+                    <td>
+                        <% if (cartdata[i].payment.promotion) { %>
+                            <% if (parseInt(cartdata[i].amount) - parseInt(cartdata[i].payment.promotion.discount) < 0) { %>
+                                0
+                            <% } else { %>
+                                <%= parseInt(cartdata[i].amount) - parseInt(cartdata[i].payment.promotion.discount) %>
+                                <% total += parseInt(cartdata[i].amount) - parseInt(cartdata[i].payment.promotion.discount) %>
+                        <% }} else { %>
+                            <%= parseInt(cartdata[i].amount) %>
+                            <% total += parseInt(cartdata[i].amount) %>
+                        <% } %>
+                    </td>
+                    <td><a onclick="return(confirm())" href="/deletecart/<%= cartdata[i].cartid %>">Delete</a></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+    <div class="boxpay">
+        <h3>รวมเงินทั้งหมด <%= total %></h3>
+        <% if (cartdata.length) { %>
+            <a class="pay" href="/pay">ชำละเงิน</a>
+        <% } %>
+    </div>
+
+    <script>
+
+        const pay = document.querySelector(".pay");
+
+        pay.addEventListener("click",(e) => {
+
+            Swal.fire({
+                title: "Drag me!",
+                icon: "success",
+                draggable: true
+            });
+        })
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        header{
+            position: relative;
+            background-color: #333333;
+            height: 60px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header > a{
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .logout{
+            position: absolute;
+            right: 30px;
+        }
+
+        .content{
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .content .boxleft{
+            width: 290px;
+            height: 290px;
+            border-radius: 20px;
+            background-color: #333333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            row-gap: 20px;
+        }
+
+        .content .boxleft > img{
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+        }
+
+        .content .boxleft > p{
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .content .boxright{
+            flex-grow: 1;
+            background-color:#333333;
+            border-radius: 20px;
+            padding: 0 20px;
+        }
+
+        .content .boxright select{
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .content .boxright form p{
+            margin-top: 20px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .content .boxright form .boxpackage{
+            margin-bottom: 20px;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .content .boxright form .boxpackage > div{
+            display: flex;
+            gap: 20px;
+        }
+
+        .content .boxright form .boxpackage > div > span{
+            color: #fff;
+        }
+
+        .content .boxright form .boxpackage  input{
+            align-self: baseline;
+            width: 20px;
+            height: 20px;
+        }
+
+        .boxbtn{
+            display: flex;
+            padding: 20px;
+            justify-content: end;
+        }
+
+        .boxbtn > button{
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #579aff;
+            font-weight: bold;
+            border: none;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/home">หน้าหลัก</a>
+        <a href="/cart">การสั่งซื้อ</a>
+        <% if (datalogin.role == "admin") { %>
+        <a href="/insertgame">เพิ่มเกม</a>
+        <a href="/editgame">จัดการเกม</a>
+        <a href="/managepayment">จัดการ การชำระเงิน</a>
+        <% } %>
+        <a class="logout" href="/logout">Logout</a>
+    </header>
+    <div class="content">
+        <div class="boxleft">
+            <img src="<%= gamedata.urlimage %>" alt="">
+            <p><%= gamedata.gamename %></p>
+        </div>
+        <div class="boxright">
+            <form action="/insertcart/<%= gamedata.gameid %>" method="post">
+                <p>ช่องทางชำละเงิน</p>
+                <select name="payment" id="" required>
+                    <option value="">-</option>
+                    <% for (let i = 0 ; i < paymentpromotion.length ; i++) { %>
+                        <option value="<%= paymentpromotion[i].paymentid %>"><%= paymentpromotion[i].payment_metod %> <span>Promotion:<%= paymentpromotion[i].promotion != null ? paymentpromotion[i].promotion.promo_name:"ไม่มี" %></span> <span>ส่วนลด:<%= paymentpromotion[i].promotion != null ? paymentpromotion[i].promotion.discount:"0" %></span></option>
+                    <% } %>
+                </select>
+                <p>เลือกแพ็คเกจ</p>
+                <div class="boxpackage">
+                    <div>
+                        <input type="radio" name="package" value="50" required>
+                        <span>50 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="100" required>
+                        <span>100 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="150" required>
+                        <span>150 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="200" required>
+                        <span>200 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="250" required>
+                        <span>250 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="300" required>
+                        <span>300 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="350" required>
+                        <span>350 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="400" required>
+                        <span>400 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="450" required>
+                        <span>450 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="500" required>
+                        <span>500 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="550" required>
+                        <span>550 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="600" required>
+                        <span>600 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="650" required>
+                        <span>650 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="700" required>
+                        <span>700 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="750" required>
+                        <span>750 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="800" required>
+                        <span>800 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="850" required>
+                        <span>850 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="900" required>
+                        <span>900 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="950" required>
+                        <span>950 บาท</span>
+                    </div>
+                    <div>
+                        <input type="radio" name="package" value="1000" required>
+                        <span>1000 บาท</span>
+                    </div>
+                </div>
+                <div class="boxbtn">
+                    <button type="submit">ดำเนินการต่อ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

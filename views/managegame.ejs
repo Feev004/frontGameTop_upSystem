@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Managegame</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            padding:0 0 20px 0;
+        }
+        
+
+        h1{
+            color: #333333;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        p{
+            color: #333333;
+        }
+
+        header{
+            position: relative;
+            background-color: #333333;
+            height: 60px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header > a{
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        body > p{
+            font-size: 20px;
+            margin: 30px;
+            color: #333333;
+            font-weight: bold;
+            text-decoration: 4px underline;
+        }
+
+        table{
+            margin-top: 20px;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        th{
+            position: sticky;
+            top: 0;
+            width: 25%;
+            background-color: #333333;
+            color: #fff;
+            padding: 10px 10px;
+        }
+
+        td{
+            padding: 20px;
+            text-align: center;
+        }
+
+        td img{
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+        }
+
+        td a{
+            margin-right: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        td a:nth-of-type(1){
+            color: #fedc15;
+        }
+
+        td a:nth-of-type(2){
+            color: #ff0034;
+        }
+
+        .logout{
+            position: absolute;
+            right: 30px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/home">หน้าหลัก</a>
+        <a href="/cart">การสั่งซื้อ</a>
+        <a href="/insertgame">เพิ่มเกม</a>
+        <a href="/editgame">จัดการเกม</a>
+        <a href="/managepayment">จัดการ การชำระเงิน</a>
+        <a class="logout" href="/logout">Logout</a>
+    </header>
+    <h1>จัดการเกม</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>รุป</th>
+                <th>ชื่อเกม</th>
+                <th>ค่ายเกม</th>
+                <th>Option</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let i = 0 ; i < gamedata.length ; i++) { %>
+                <tr>
+                    <td>
+                        <img src="<%= gamedata[i].urlimage %>" alt="">
+                    </td>
+                    <td>
+                        <p><%= gamedata[i].gamename %></p>
+                    </td>
+                    <td>
+                        <p><%= gamedata[i].publisher %></p>
+                    </td>
+                    <td>
+                        <a href="/editgame/<%= gamedata[i].gameid %>">Edit</a>
+                        <a onclick="return(confirm())" href="/deletegame/<%= gamedata[i].gameid %>">Delete</a>
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html>
