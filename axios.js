@@ -14,7 +14,7 @@ app.use(
   session({ secret: "mysession", resave: false, saveUninitialized: true })
 );
 
-// const url = "https://node56384-noderest-test1.proen.app.ruk-com.cloud"
+// const url = "http://node76879-env-112.proen.app.ruk-com.cloud:11856";
 const url = "http://localhost:3000";
 
 const storage = multer.diskStorage({
@@ -269,6 +269,11 @@ app.get("/pay", async (req,res) => {
   }
 });
 
+// const PORT = process.env.PORT || 11855;
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port http://node76880-env-112.proen.app.ruk-com.cloud:${PORT}/`);
+// });
+
 app.listen(5500, () => {
-    console.log(`Server is running on http://localhost:5500`);
+    console.log(`Server is running on http://localhost:5500, ${url}`);
   });
