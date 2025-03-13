@@ -275,5 +275,5 @@ app.get("/pay", async (req,res) => {
 // });
 
 app.listen(5500, () => {
-    console.log(`Server is running on http://localhost:5500, ${url}`);
+    console.log(`Server is running on  http://node76879-env-112.proen.app.ruk-com.cloud:11856`);
   });
